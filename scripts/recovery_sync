@@ -25,6 +25,12 @@ gunzip <"$target" | cpio -idm
 
 rsync -a /run/systemd/network/ etc/systemd/network
 mkdir -p etc/dropbear
+rsync -a /opt/delphix/server/etc/nginx.default ./opt/delphix/server/etc/
+rsync -a /opt/delphix/server/etc/nginx ./opt/delphix/server/etc/
+sed -i '/_log /d' ./opt/delphix/server/etc/nginx/nginx.conf
+sed -i 's@include /opt/delphix/server/etc/nginx/conf.d/\*;@root /var/www/;@' \
+	./opt/delphix/server/etc/nginx/nginx.conf
+
 #
 # Dropbear reads keys in a different format from the normal ssh server. We
 # use dropbearconvert to translate them.
