@@ -68,8 +68,10 @@ find . -print0 | cpio --null --create --format=newc | gzip -7 >"$target" 2>/dev/
 # mkconfig in this script, and rely on the end-of-upgrade scripts to do it.
 #
 
-grub-editenv /boot/grub/grubenv create
-grub-editenv /boot/grub/grubenv set bootcount=0
+if [[ -z "$2" ]]; then
+	grub-editenv /boot/grub/grubenv create
+	grub-editenv /boot/grub/grubenv set bootcount=0
+fi
 systemctl enable delphix-bootcount.service
 
 /usr/bin/recovery_sync $target
